@@ -1,4 +1,4 @@
-# 🎓 Spring Boot OAuth Login Demo
+# 🎓 Spring Boot OAuth Login
 
 Una aplicación web desarrollada con **Spring Boot** que implementa autenticación OAuth 2.0 con Google. Proyecto universitario que demuestra la integración de autenticación social en aplicaciones Java.
 
