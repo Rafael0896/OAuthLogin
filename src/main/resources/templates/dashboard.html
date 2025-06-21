@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - OAuth Universidad</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/Styles.css">
+</head>
+<body>
+<div class="dashboard-container">
+    <!-- Header con información del usuario -->
+    <div class="header">
+        <div class="user-info">
+            <img th:src="${userPicture}" th:alt="${userName}" class="user-avatar pulse">
+            <div class="user-details">
+                <h2 th:text="${userName}">Usuario</h2>
+                <p th:text="${userEmail}">usuario@email.com</p>
+            </div>
+        </div>
+        <form th:action="@{/logout}" method="post" style="display: inline;">
+            <button type="submit" class="logout-btn">
+                <i class="fas fa-sign-out-alt"></i>
+                Cerrar Sesión
+            </button>
+        </form>
+    </div>
+
+    <!-- Grid de tarjetas informativas -->
+    <div class="cards-grid">
+        <!-- Tarjeta de Perfil -->
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon profile">
+                    <i class="fas fa-user"></i>
+                </div>
+                <h3 class="card-title">Información del Perfil</h3>
+            </div>
+            <div class="card-content">
+                <div class="info-item">
+                    <span class="info-label">Nombre:</span>
+                    <span class="info-value" th:text="${userName}">Usuario</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Email:</span>
+                    <span class="info-value" th:text="${userEmail}">email@domain.com</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Estado:</span>
+                    <span class="success-badge">
+                            <i class="fas fa-check-circle"></i>
+                            Verificado
+                        </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tarjeta de Seguridad -->
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon security">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3 class="card-title">Seguridad OAuth</h3>
+            </div>
+            <div class="card-content">
+                <div class="info-item">
+                    <span class="info-label">Proveedor:</span>
+                    <span class="info-value">Google OAuth 2.0</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Autenticación:</span>
+                    <span class="success-badge">
+                            <i class="fas fa-lock"></i>
+                            Segura
+                        </span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Sesión:</span>
+                    <span class="info-value">Activa</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tarjeta de Estadísticas -->
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon stats">
+                    <i class="fas fa-chart-bar"></i>
+                </div>
+                <h3 class="card-title">Estadísticas de Sesión</h3>
+            </div>
+            <div class="card-content">
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <span class="stat-number">1</span>
+                        <div class="stat-label">Sesión Activa</div>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">100%</span>
+                        <div class="stat-label">Seguridad</div>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="sessionTime">0:00</span>
+                        <div class="stat-label">Tiempo de Sesión</div>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">OAuth</span>
+                        <div class="stat-label">Protocolo</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <h3>¡Autenticación Exitosa!</h3>
+        <p>Has accedido correctamente al sistema utilizando Google OAuth 2.0</p>
+        <p style="margin-top: 0.5rem; font-size: 0.85rem; opacity: 0.8;">
+            Proyecto Universitario - Spring Boot & OAuth Integration
+        </p>
+    </div>
+</div>
+
+<script>
+    // Contador de tiempo de sesión
+    let sessionStart = Date.now();
+
+    function updateSessionTime() {
+        const elapsed = Math.floor((Date.now() - sessionStart) / 1000);
+        const minutes = Math.floor(elapsed / 60);
+        const seconds = elapsed % 60;
+        document.getElementById('sessionTime').textContent =
+            `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    }
+
+    // Actualizar cada segundo
+    setInterval(updateSessionTime, 1000);
+
+    // Animación de entrada para las tarjetas
+    const cards = document.querySelectorAll('.card');
+    cards.forEach((card, index) => {
+        setTimeout(() => {
+            card.style.transform = 'translateY(0)';
+            card.style.opacity = '1';
+        }, index * 200);
+    });
+
+    // Efecto hover mejorado para tarjetas
+    cards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-8px) scale(1.02)';
+        });
+
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0) scale(1)';
+        });
+    });
+
+    // Animación del avatar
+    const avatar = document.querySelector('.user-avatar');
+    if (avatar) {
+        avatar.addEventListener('click', function() {
+            this.style.animation = 'none';
+            setTimeout(() => {
+                this.style.animation = 'pulse 2s infinite';
+            }, 10);
+        });
+    }
+</script>
+</body>
+</html>>
